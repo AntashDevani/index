@@ -180,7 +180,7 @@ footer {
 footer iframe {
 	width: 100%;
 	border:0;
-	height: 80px;
+	height: -webkit-fill-available;
 }
 .bg {
 	position: fixed;
