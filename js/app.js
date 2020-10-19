@@ -193,7 +193,6 @@ if (able){
 		})
 		add_main_page()
 		ads.add_html(".main",Nodes.footer)
-		ads.add_html("head",'<link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet"/><link rel="stylesheet" href="css/app.css"/>')
 	}
 
 	setInterval(()=>{

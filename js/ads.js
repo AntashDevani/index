@@ -2,7 +2,7 @@
 const ads = {};
 ads.node=function(id){
 	if(typeof(id)=='object'){
-		return id
+		return [id]
 	}
 	else{
 		return document.querySelectorAll(id)
@@ -11,20 +11,13 @@ ads.node=function(id){
 ads.add_html=function(root,html){
 	return new Promise(function(resolve,reject){
 		var x=ads.node(root);
-		var have=false;
-		if(typeof(root)=='object'){
-			root.innerHTML+=html;
+		if(x.length>0){
+			x[0].innerHTML+=html;
 			resolve('done')
 		}
 		else{
-			if(x.length>0){
-				x[0].innerHTML+=html;
-				resolve('done')
-			}
-			else{
-				alert(new Error("Node not Founder "+root));
-				location.reload()
-			}
+			alert(new Error("Node not Founder "+root));
+			location.reload()
 		}
 	})
 }
