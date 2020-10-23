@@ -221,7 +221,7 @@ iframe {
 }
 @keyframes fontName {
     from {
-        line-height: 0px;
+        line-height: 1px;
     }
     to {
         line-height: 100px;
