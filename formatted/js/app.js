@@ -1,5 +1,3 @@
-import { ads } from "./ads.js";
-"use strict";
 const _ = {
 	W:window,
 	D:document,
@@ -15,17 +13,16 @@ var external_url = {
 	'google':'https://google.com',
 	'google_query':function(){
 		return this.google+'/search?q='
-	}
+	},
+	'jiosaavn':"https://imantashdevani.github.io/jiosaavn/index.html",
 }
-
-var Nodes = {
-	BG:'<div class="bg"></div>',
-	Main:'<div class="main"></div>',
-	header:'<header><div width33 google><div google-logo></div><input name="text" class="search-input" accessKey="g" special/></div><div width33 time><span class="time"></span></div><div width33 control_area><div class="setting" accessKey="s"></div><div accessKey="c" class="cancel hide"></div><div class="bettary"><span class="bettarypercentage"></span></div><div class="theme-switch-wrapper"><label class="theme-switch" for="checkbox"><input type="checkbox" accessKey="a" id="checkbox"/><div class="slider round"></div></label></div></div></header>',
-	main:'<main></main>',
-	briefs:'<div><h1 class="gretting"></h1><h1 class="brief"></h1></div>',
-	setting_from:'<form><div style="margin-left:100px;margin-top 40px;"><br><div><span class="form-tag-color">Name:</span><br><input class="search-input" name="name"></div><br><div><span class="form-tag-color">Country:</span><br><input class="search-input" name="country"></div><br><div><span class="form-tag-color">Company:</span><br><input class="search-input" name="company"></div><br><button id="submit-button" class="button round">Save</button><p style="color:green;" class="hide" id="msg">Successfully Saved !</p></div></form>',
-	footer:'<footer><iframe src="https://imantashdevani.github.io/index_2.html"></iframe></footer>'
+var JsonNodes = {
+	BG:[{"name":"div","attr":{"class":"bg"}}],
+	Main:[{"name":"div","attr":{"class":"main"}}],
+	header:[{"name":"header","attr":{"class":"remove"},"children":[{"name":"div","attr":{"width33":"","google":""},"children":[{"name":"div","attr":{"google_logo":""}},{"name":"input","attr":{"name":"text","class":"search-input","accessKey":"g","special":""}}]},{"name":"div","attr":{"width33":"","time":""},"children":[{"name":"span","attr":{"class":"time"}}]},{"name":"div","attr":{"width33":"","control_area":""},"children":[{"name":"div","attr":{"class":"setting","accessKey":"s"}},{"name":"div","attr":{"class":"cancel hide","accessKey":"c"}},{"name":"div","attr":{"class":"bettary"},"children":[{"name":"span","attr":{"class":"bettarypercentage"}}]},{"name":"div","attr":{"class":"theme-switch-wrapper"},"children":[{"name":"label","attr":{"class":"theme-switch","for":"checkbox"},"children":[{"name":"input","attr":{"type":"checkbox","accessKey":"a","id":"checkbox"}},{"name":"div","attr":{"class":"slider round"}}]}]}]}]}],
+	main:[{"name":"main"}],
+	briefs:[{"name":"div","children":[{"name":"h1","attr":{"class":"gretting"}},{"name":"h1","attr":{"class":"brief"}}]}],
+	footer:[{"name":"footer","children":[{"name":"iframe","attr":{"src":external_url.jiosaavn}}]}],
 }
 var able = true;
 if (!_.L){document.write('<h1 style="line-height:2;color:red;">localStorage is not Supported</h1>');able=false}
@@ -57,10 +54,9 @@ if (able){
 	function getBettary(){
 		navigator.getBattery().then(function (b) {
 			let c = b.level;
-			let bet = ads.node('.bettarypercentage')[0];
 			let p = addZero(parseInt(c*100));
 			let d = ((b.charging) ? p+'^' : p)
-			bet.innerText=d;
+			ADs('.bettarypercentage').text(d);
 		})
 	}
 
@@ -87,13 +83,12 @@ if (able){
 		if (!_.gret||_.gret!=d||direct){
 			_.gret=d;
 			let x=localStorage.getItem("Xy51");
-			ads.node('.gretting')[0].innerText=((x) ? _.gret+', '+atob(x) : _.gret);
+			ADs('.gretting').text((x) ? _.gret+', '+atob(x) : _.gret)
 		}
 	}
 
 	function _c_c_(a,b){
-		var x= ads.node('.brief');
-		x[0].innerText = atob(a) + ' - '+ atob(b);
+		ADs('.brief').text(atob(a) + ' - '+ atob(b));
 	}
 
 	function google_search(x){
@@ -101,7 +96,7 @@ if (able){
 	}
 
 	function search_input(){
-		ads.node("input.search-input")[0][_.S[0]](_.S[3],function(e){
+		ADs("input.search-input")[0][_.S[0]](_.S[3],function(e){
 			let x=this.value;
 			if (x.trim()){
 				if(e.ctrlKey && 13==e.keyCode){
@@ -119,43 +114,37 @@ if (able){
 		})
 	}
 
-	function ads_main_theme(){
-		ads.add_html("main",Nodes.briefs)
+	async function ads_main_theme(){
+		ADs("main").append(await ADs.j2h(JsonNodes.briefs))
 		let company = _.L.getItem('Xy5j')
 		let country = _.L.getItem('Xy5D')
 		_gretting(true)
 		_c_c_(company,country)
 	}
 
-	function ads_open_setting(){
-		ads.add_html("main",Nodes.setting_from)
-	}
-
-	function add_main_page(){
-		ads.add_html(".main",Nodes.main).then((r)=>{
-			if(r=='done'){
-				set_storage()
-				ads.css("main",['height','calc('+_.W.innerHeight+'px - 160px)'])
-				ads_main_theme()
-			}
+	async function add_main_page(){
+		ADs(".main").append(await ADs.j2h(JsonNodes.main)).then(()=>{
+			set_storage()
+			ADs("main").css({height:'calc('+_.W.innerHeight+'px - 160px)'})
+			ads_main_theme()
 		})
 	}
 
 	function enable_dark_mode(){
 		let l = localStorage.getItem("Xy5kbQ");
-		let b = ads.node("body");
+		let b = ADs("body");
 		if (l=="true"){
-			ads.node("#checkbox")[0].checked=true;
+			ADs("#checkbox").checked=true;
 			b[0].classList.add("dark")
 		}
 		else if (l=="false") {
-			ads.node("#checkbox")[0].checked=false;
+			ADs("#checkbox").checked=false;
 			b[0].classList.remove("dark")
 		}
 	}
 
 	function dark_mode(){
-		let x = ads.node('#checkbox')
+		let x = ADs('#checkbox')
 		x[0][_.S[0]](_.S[5],()=>{
 			let l = localStorage.getItem("Xy5kbQ");
 			if (x[0].checked){localStorage.setItem("Xy5kbQ",true)}
@@ -164,39 +153,36 @@ if (able){
 		})
 	}
 
-	function main(){
-		document.title="ADs - New Tab";
-		ads.add_html(_.D.body,Nodes.BG).then(function(result){
-			if (result=='done'){
-				enable_dark_mode()
-				var x = ads.node('.bg')
-				get_bg_image().then(function(r){
-					if (r=='done'){
-						ads.css('.bg',['background-image','url('+_.BGImage+')','background-size',_.W.innerWidth+'px'+' '+_.W.innerHeight+'px'])
-						let l = localStorage.getItem("Xy5kbQ");
-						if (l!=="true"){ads.node('.bg')[0].classList.add("bg-animate")}
+	async function main(){
+		_.D.title="ADs - New Tab";
+		ADs(_.D.body).append(await ADs.j2h(JsonNodes.BG)).then(function(r){
+			enable_dark_mode()
+			var x = ADs('.bg')
+			get_bg_image().then(function(r){
+				if (r=='done'){
+					ADs('.bg').css({'background-image':'url('+_.BGImage+')'})
+					let l = localStorage.getItem("Xy5kbQ");
+					if (l!=="true"){
+						ADs('.bg').addClass("bg-animate")
 					}
-				})
-			}
+				}
+			})	
 		})
-
-		ads.add_html(_.D.body,Nodes.Main)
-		ads.add_html(".main",Nodes.header).then(function(r){
-			if (r=='done'){
-				ads.node('.time')[0].innerText=getTime();
-				getBettary()
-				search_input()
-				ads.node("input.search-input")[0].focus()
-				ads.node('div[google-logo]')[0].onclick=function(){_.W.open(external_url.google)}
-				dark_mode()
-			}
+		ADs(_.D.body).append(await ADs.j2h(JsonNodes.Main))
+		ADs(".main").append(await ADs.j2h(JsonNodes.header)).then((r)=>{
+			ADs(".time").text(getTime())
+			getBettary()
+			search_input()
+			ADs("input.search-input")[0].focus()
+			ADs('div[google_logo]').onclick=function(){_.W.open(external_url.google)}
+			dark_mode()
 		})
 		add_main_page()
-		ads.add_html(".main",Nodes.footer)
+		ADs(".main").append(await ADs.j2h(JsonNodes.footer))
 	}
 
 	setInterval(()=>{
-		ads.node('.time')[0].innerText=getTime();
+		ADs(".time").text(getTime())
 		getBettary()
 		_gretting()
 	},1000)
@@ -204,25 +190,9 @@ if (able){
 	function main_resize(e){
 		var h=_.W.innerHeight-160;
 		if (h>300){
-			ads.css("main",['height','calc('+h+'px)'])
+			ADs("main").css({height:'calc('+h+'px)'})
 		}
-		ads.css('.bg',['background-size',_.W.innerWidth+'px'+' '+_.W.innerHeight+'px'])
 	}
-
-	setTimeout(()=>{
-		ads.node(".setting")[0].onclick=function(){
-			ads.addclass(ads.node(this),'hide')
-			ads.removeclass(ads.node(".cancel"),'hide')
-			ads.node("main")[0].innerHTML="";
-			ads_open_setting()
-		}
-		ads.node(".cancel")[0].onclick=function(){
-			ads.addclass(ads.node(this),'hide')
-			ads.removeclass(ads.node(".setting"),'hide');
-			ads.node("main")[0].innerHTML="";
-			ads_main_theme()
-		}
-	},100)
 
 	_.D[_.S[0]](_.S[1],main())
 	_.W.onresize = function(e){main_resize(e)}

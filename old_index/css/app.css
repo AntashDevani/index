@@ -47,10 +47,7 @@ header {
 .hide {
 	display:none !important;
 }
-.show {
-	display: block !important;
-}
-[google_logo]{
+[google-logo]{
 	background-image: url('https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png');
 	background-repeat: no-repeat;
 	background-size: 100px;
@@ -179,24 +176,19 @@ footer {
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	display: flex;
-	justify-content: center;
 }
 footer iframe {
-	width: 40%;
+	width: 100%;
 	border:0;
-}
-iframe {
-	height: 500px;
+	height: -webkit-fill-available;
 }
 .bg {
 	position: fixed;
 	height: 100%;
 	width: 100%;
-	background-repeat: no-repeat !important;
+	background-repeat: no-repeat;
 	filter:grayscale(.2);
 	background: #282c34;
-	background-size: 100% 100%;
 }
 .bg-animate {
 	animation-name: bgFade;
