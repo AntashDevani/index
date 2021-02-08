@@ -20,7 +20,8 @@
     <body>
         <h1>Welcome to ADs Projects</h1>
         <div >
-            <code><b>$ </b>echo "deb [trusted=yes] http://antashdevani.ga/debian ./" | sudo tee -a /etc/apt/sources.list > /dev/null</code><br/>
+            <code><b>$ </b>sudo wget -O - http://imantashdevani.github.io/debian/ADs.key | apt-key add -</code><br/>
+            <code><b>$ </b>echo "deb [trusted=yes] http://imantashdevani.github.io/debian ./" | sudo tee -a /etc/apt/sources.list > /dev/null</code><br/>
             <code><b>$ </b>sudo apt-get update</code><br/>
             <code><b>$ </b>sudo apt-get install ads</code><br/>
             <code><b>$ </b>ADs</code>
