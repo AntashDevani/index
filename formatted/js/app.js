@@ -174,7 +174,7 @@ if (able){
 			getBettary()
 			search_input()
 			ADs("input.search-input")[0].focus()
-			ADs('div[google_logo]').onclick=function(){_.W.open(external_url.google)}
+			ADs('div[google_logo]')[0].onclick=function(){_.W.open(external_url.google)}
 			dark_mode()
 		})
 		add_main_page()
